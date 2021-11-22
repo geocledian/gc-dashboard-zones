@@ -4,8 +4,8 @@
  init script
  
  created: 2021-11-19, jsommer
- updated: 2021-11-19, jsommer
- version: 0.1.0
+ updated: 2021-11-22, jsommer
+ version: 0.2.0
 */
 
 // root Vue instance
@@ -29,7 +29,7 @@ const libs = ['https://unpkg.com/vue@2.6.14/dist/vue.min.js',
               // 'https://maps.googleapis.com/maps/api/js?key=YOUR_VALID_API_KEY_FROM_GOOGLE', 
               // 'https://unpkg.com/leaflet.gridlayer.googlemutant@0.11.2/dist/Leaflet.GoogleMutant.js',
               'https://unpkg.com/leaflet-geosearch@3.1.0/dist/bundle.min.js',
-              '../gc-chart/css/bulma-ext/bulma-calendar.min.js',
+              '../gc-styles/bulma/0.6.2/bulma-ext/bulma-calendar/v1/bulma-calendar.min.js',
               '../gc-zones-chart/js/d3.v6.min.js', // v6.7.0
               '../gc-zones-chart/js/billboard.min.js', // v3.1.5
               '../gc-filter/js/gc-filter.min.js',
@@ -45,7 +45,7 @@ function gcGetBaseURL() {
     //get the base URL relative to the current script - regardless from where it was called
     // js files are loaded relative to the page
     // css files are loaded relative to its file
-    let scriptURL = document.getElementById("gc-validation-dashboard-init");
+    let scriptURL = document.getElementById("gc-dashboard-zones-init");
     let url = new URL(scriptURL.src);
     let basename = url.pathname.substring(url.pathname.lastIndexOf('/')+1);
     return url.href.split('/js/'+basename)[0];
