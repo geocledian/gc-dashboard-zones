@@ -1,0 +1,258 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no, minimal-ui">
+  <meta charset="utf-8">
+  
+  <title>Zones Dashboard</title>
+  
+  <link href="css/gc-dashboard-zones.css" rel="stylesheet">
+
+  <style>
+    body {
+      font-family: "Trebuchet MS", Arial, Helvetica, sans-serif;
+      line-height: 1.1em;
+      font-size: 0.9rem;
+    }
+    .gc-zones-map {
+      width: 100%;
+      height: 420px;
+    }
+    
+  </style>
+
+</head>
+
+<body>
+
+  <nav class="navbar is-light has-shadow" role="navigation" aria-label="main navigation">
+    <div class="navbar-brand" >
+      <!--span class="navbar-title">Demo client for ag|knowledge</span -->
+      <a class="navbar-item" href="https://www.geocledian.com">
+        <img src="img/logo.png" alt="geo|cledian - logo">
+      </a>
+      <!-- appears only on mobile -->
+      <div id="navBurger" class="navbar-burger burger" data-target="navMenu">
+        <span></span>
+        <span></span>
+        <span></span>
+      </div>
+    </div>
+    <div id="navMenu" class="navbar-menu">
+      <div class="navbar-start">
+        <a id="navbarProductOverview" class="navbar-item" href="https://docs.geocledian.com/product-overview/" target="_blank"></a>
+        <a id="navbarAboutUs" class="navbar-item" href="https://geocledian.com/page/aboutus/" target="_blank"></a>
+        <a id="navbarAnalyst" class="navbar-item" href="../analyst" target="_blank"></a>
+        <a id="navbarPortfolio" class="navbar-item" href="../portfolio" target="_blank"></a>
+        <a id="navbarCropPerformance" class="navbar-item is-disabled" href="../crop-performance" target="_blank"></a>
+        <a class="navbar-item is-pulled-right" onclick="vmRoot.$root.language = 'de'">DE</a>
+        <a class="navbar-item is-pulled-right" onclick="vmRoot.$root.language = 'en'">EN</a>
+      </div>
+    </div>
+  </nav>
+
+
+  <section id="gc-app" class="section" style="padding-top: 1em; padding-bottom: 0em; padding-left: 1.5rem; padding-right: 1.5rem;">
+    <div class="columns" style="margin-bottom: 0em; margin-left: 0em; padding-right: 1.5em;">       
+      <div class="column is-one-fifth" style="padding-bottom: 0em; max-width: 20em;">
+
+        <p class="menu-label">
+          Search & Filters
+        </p>
+
+        <div style="margin-block-start: 0.5em; margin-block-end: 0.5em;">
+          <gc-filter
+            gc-widget-id="filter1"
+            :gc-apikey="$root.gcApikey" 
+            :gc-api-base-url="$root.gcApiBaseUrl"
+            :gc-host="$root.gcHost"
+            gc-layout="vertical"
+            :gc-language="$root.language">
+          </gc-filter>
+        </div>
+
+        <p class="menu-label">
+          Analytics
+        </p>
+
+        <div v-show="analyticsActive">
+          <gc-zones-control
+            gc-widget-id="zones1" 
+            :gc-apikey="$root.gcApikey" 
+            :gc-api-base-url="$root.gcApiBaseUrl" 
+            :gc-host="$root.gcHost"
+            :gc-selected-parcel-id="$root.selectedParcelId" 
+            :gc-startdate="$root.startdate"
+            :gc-enddate="$root.enddate"
+            gc-available-options=""
+          />
+        </div>
+
+      </div>
+
+      <div class="column" style="margin-bottom: 0em;">
+        <div class="" style="padding-bottom: 0em;">
+
+            <p class="menu-label" id="menuDetails">
+              Details
+            </p>
+              <div style="margin-block-start: 0.5em; margin-block-end: 0.5em; overflow: auto;">
+                <gc-parceldata 
+                  gc-widget-id="parceldata1"
+                  :gc-apikey="$root.gcApikey" 
+                  :gc-api-base-url="$root.gcApiBaseUrl" 
+                  :gc-host="$root.gcHost"
+                  :gc-selected-parcel-id="$root.selectedParcelId"
+                  :gc-language="$root.language"
+                  gc-available-fields="parcelId,name,crop,entity,planting,harvest,area"
+                  :gc-limit="$root.limit"
+                  :gc-offset="$root.offset"
+                  :gc-filter-string="$root.filterString"
+                  :gc-parcels="$root.parcels"
+                  gc-layout="horizontal">
+                </gc-parceldata>  
+              </div>
+            
+            <div class="outer-split-container">
+        
+              <div id="leftColumn" class="split" style="padding-bottom: 0em; padding: 0em; padding-right: 0.5em;" v-show="leftColumnShow">
+                
+                <div>
+                  <gc-zones-map
+                    gc-widget-id="map1"
+                    :gc-apikey="$root.gcApikey" 
+                    :gc-api-base-url="$root.gcApiBaseUrl"
+                    :gc-host="$root.gcHost"
+                    :gc-language="$root.language"
+                    gc-available-tools="legend,downloadImage"
+                    gc-selected-product="zones"
+                    :gc-current-parcel-id="$root.selectedParcelId" 
+                    gc-legend-position="topright"
+                    :gc-filter-string="$root.filterString"    
+                    :gc-limit="$root.limit"
+                    :gc-offset="$root.offset"
+                    :gc-data-source="$root.dataSource"
+                    :gc-startdate="$root.startdate"
+                    :gc-enddate="$root.enddate"
+                    :gc-pixelsize="$root.pixelsize"
+                  />
+                </div>
+
+              </div>
+            
+              <div id="rightColumn" class="split" style="padding-bottom: 0em; padding: 0em; " v-show="rightColumnShow">
+                <div>
+                  <gc-zones-chart 
+                    gc-widget-id="zonesChart1"
+                    :gc-zones-data="$root.zonesData"
+                    gc-available-options=""
+                    gc-mode="pie"
+                    :gc-white-label="true"
+                  />
+                </div>
+              </div>
+        
+            </div> <!-- columns -->
+
+            <!-- <p class="menu-label">
+              Utilities
+            </p> -->
+
+            <!-- <span>BOTTOM FULL WIDTH</span> -->
+        </div>
+      </div>
+    </div>
+    <!-- <hr> -->
+
+  </section> <!-- app-->
+
+  <footer id="footer" class="footer is-light">
+    <div class="has-text-centered"><a href="http://www.geocledian.com">geo|cledian</a> GmbH. <span id="allRightsReserved">All rights reserved</span>.
+      <p class="content"></p>
+      <p class="content">contains <a href="https://scihub.copernicus.eu/twiki/pub/SciHubWebPortal/TermsConditions/TC_Sentinel_Data_31072014.pdf" target="_blank">Copernicus</a> data <span id="copyrightYear">2020</span><br>
+        U.S. Geological Service <a href="https://www.usgs.gov/information-policies-and-instructions/crediting-usgs" target="_blank">Landsat 8</a> used in compiling this information</p>
+  </footer>
+</body>
+
+<!-- tranlations of index.html -->
+<script>
+  const indexLocales = {
+    "en": {
+      "navbar": {
+        "productOverview": "Product Overview",
+        "analyst": "Analyst's Dashboard",
+        "cropPerformance": "Crop Performance Dashboard",
+        "portfolio": "Portfolio Dashboard",
+        "validation": "Data Validation Dashboard",
+        "zones": "Zones Dashboard",
+        "about": "About us"
+      },
+      "headings": {
+        "graph": "Graph",
+        "list": "Attributes",
+        "map": "Map",
+        "filter": "Search"
+      },
+      "footer": {
+        "allRightsReserved" : "All rights reserved",
+      },
+      "mode" : {
+        "label": "Mode",
+        "one_index": "one product, all statistics",
+        "many_indices": "many products, means"
+      }
+    },
+    "de": {
+      "navbar": {
+        "productOverview": "Produktübersicht",
+        "analyst": "Analyst's Dashboard",
+        "cropPerformance": "Crop Performance Dashboard",
+        "portfolio": "Portfolio Dashboard",
+        "validation": "Validierungs-Dashboard",
+        "zones": "Zonierungs-Dashboard",
+        "about": "Über uns"
+      },
+      "headings": {
+        "graph": "Diagramm",
+        "list": "Daten",
+        "map": "Karte",
+        "filter": "Suche"
+      },
+      "footer": {
+        "allRightsReserved" : "Alle Rechte vorbehalten",
+      },
+      "mode" : {
+          "label": "Modus",
+          "one_index": "ein Produkt, alle Statistikwerte",
+          "many_indices": "mehrere Produkte, Mittelwerte"
+      }
+    }
+  };
+  function activateSplitView() {
+    vmRoot.leftColumnShow = true;
+    vmRoot.rightColumnShow = true;
+    vmRoot.containerSplitSize = [60,40];
+  }
+  function leftColumnFull() {
+    // catch wrong resize of chart lib of 100% width is reached
+    if (vmRoot.containerSplitSize[0] !== 100 && vmRoot.containerSplitSize[1] !== 0) {
+      vmRoot.rightColumnShow = false;
+      vmRoot.leftColumnShow = true;
+      vmRoot.containerSplitSize = [100,0];
+    }
+  }
+  function rightColumnFull() {
+    // catch wrong resize of chart lib of 100% width is reached
+    if (vmRoot.containerSplitSize[0] !== 0 && vmRoot.containerSplitSize[1] !== 100) {
+      vmRoot.leftColumnShow = false;
+      vmRoot.rightColumnShow = true;
+      vmRoot.containerSplitSize = [0,100];
+    }
+  }
+</script>
+<!-- GC validation-dashboard begin -->
+<script id="gc-validation-dashboard-init" type="text/javascript" src="js/gc-dashboard-zones-init.js" async></script>
+<!-- GC validation-dashboard component end -->
+
+</html>
