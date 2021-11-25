@@ -207,11 +207,11 @@ function initComponent() {
         this.containerSplitSize = [62,38];
         
         //trigger apply filter
-        // for (var i=0; i < this.$children.length; i++ ) {
-        //   if (this.$children[i].gcWidgetId.includes("filter")) {
-        //     this.$children[i].applyFilter();
-        //   } 
-        // }
+        for (var i=0; i < this.$children.length; i++ ) {
+          if (this.$children[i].gcWidgetId.includes("filter")) {
+            this.$children[i].applyFilter();
+          } 
+        }
       },
       watch: {
         parcels: function(newValue, oldValue) {
@@ -348,8 +348,10 @@ function initComponent() {
           document.getElementById("navbarProductOverview").innerHTML = i18n.t("indexLocales.navbar.productOverview")
           document.getElementById("navbarAboutUs").innerHTML = i18n.t("indexLocales.navbar.about");
           document.getElementById("navbarCropPerformance").innerHTML = i18n.t("indexLocales.navbar.cropPerformance");
-          document.getElementById("navbarAnalyst").innerHTML = i18n.t("indexLocales.navbar.analyst");
+          document.getElementById("navbarDataValidation").innerHTML = i18n.t("indexLocales.navbar.validation");
           document.getElementById("navbarPortfolio").innerHTML = i18n.t("indexLocales.navbar.portfolio");
+          document.getElementById("navbarHarvest").innerHTML = i18n.t("indexLocales.navbar.harvest");
+          document.getElementById("navbarAnalyst").innerHTML = i18n.t("indexLocales.navbar.analyst");
           document.getElementById("allRightsReserved").innerHTML = i18n.t("indexLocales.footer.allRightsReserved");
         }
       }
