@@ -29,6 +29,8 @@ const libs = ['https://unpkg.com/vue@2.6.14/dist/vue.min.js',
               // 'https://maps.googleapis.com/maps/api/js?key=YOUR_VALID_API_KEY_FROM_GOOGLE', 
               // 'https://unpkg.com/leaflet.gridlayer.googlemutant@0.11.2/dist/Leaflet.GoogleMutant.js',
               'https://unpkg.com/leaflet-geosearch@3.1.0/dist/bundle.min.js',
+              // full screen
+              'https://api.mapbox.com/mapbox.js/plugins/leaflet-fullscreen/v1.0.1/Leaflet.fullscreen.min.js',
               '../gc-styles/bulma/0.6.2/bulma-ext/bulma-calendar/v1/bulma-calendar.min.js',
               '../gc-zones-chart/js/d3.v6.min.js', // v6.7.0
               '../gc-zones-chart/js/billboard.min.js', // v3.1.5
